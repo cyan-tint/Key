@@ -1,0 +1,141 @@
+/* =========================================================
+   第二章 · 小游戏专属样式
+   手术夹取碎片 + 死亡证明签字 + 义肢修复
+   ========================================================= */
+
+/* ---------- 手术夹取碎片 ---------- */
+.mg-surgery { position: absolute; inset: 0; }
+.surg-table {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(60% 50% at 50% 45%, rgba(255,40,40,0.06), transparent 70%),
+                linear-gradient(170deg, rgba(10,4,4,0.8), rgba(8,8,14,0.9));
+}
+.surg-wound {
+    position: relative; width: 380px; height: 320px; max-width: 82vw;
+    border-radius: 18px; overflow: hidden;
+    box-shadow: 0 0 60px rgba(255,20,20,0.25), 0 0 120px rgba(180,0,0,0.15), inset 0 0 40px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,80,80,0.25);
+}
+.surg-wound-inner {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 40% 55% at 48% 50%, rgba(180,30,30,0.45), rgba(60,10,10,0.7) 60%, rgba(20,8,8,0.9) 100%),
+                radial-gradient(circle at 50% 50%, rgba(200,60,60,0.2) 0%, transparent 50%);
+}
+.surg-wound-skin {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 38% 52% at 48% 50%, transparent 40%, rgba(200,150,120,0.6) 70%, rgba(180,130,100,0.8) 100%);
+    opacity: 0.7;
+}
+.surg-fragment {
+    position: absolute; width: 18px; height: 18px;
+    background: radial-gradient(circle at 40% 40%, #ffcc88, #996622 50%, #553311);
+    border: 1px solid rgba(255,200,100,0.5); border-radius: 3px;
+    transform: translate(-50%,-50%) rotate(15deg);
+    cursor: pointer;
+    box-shadow: 0 0 14px rgba(255,180,60,0.5), 0 0 4px rgba(255,200,100,0.3);
+    animation: frag-pulse 1.2s ease-in-out infinite;
+    z-index: 5; transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.surg-fragment:hover { transform: translate(-50%,-50%) rotate(15deg) scale(1.6); box-shadow: 0 0 22px rgba(255,180,60,0.8); }
+.surg-fragment.removed { transform: translate(-50%,-50%) rotate(15deg) scale(0); opacity: 0; pointer-events: none; }
+@keyframes frag-pulse { 0%,100%{box-shadow:0 0 14px rgba(255,180,60,0.5)} 50%{box-shadow:0 0 22px rgba(255,200,100,0.7)} }
+
+.surg-hand { position: absolute; z-index: 10; pointer-events: none; transition: left 0.35s cubic-bezier(0.2,0.8,0.3,1.2), top 0.35s cubic-bezier(0.2,0.8,0.3,1.2), transform 0.35s ease; }
+.surg-hand-icon { font-size: 28px; filter: drop-shadow(0 0 8px rgba(0,240,255,0.6)); display: block; transform: rotate(-45deg); }
+.surg-hand.pinching .surg-hand-icon { transform: rotate(-45deg) scale(0.6); filter: drop-shadow(0 0 14px rgba(255,200,50,0.9)); }
+
+.surg-tray {
+    position: absolute; bottom: 8%; right: 10%;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px; padding: 14px 22px;
+    background: rgba(20,30,40,0.8);
+    border: 1px solid rgba(0,240,255,0.3); border-radius: 10px;
+    color: var(--text-1); font-size: 13px;
+    box-shadow: 0 0 20px rgba(0,240,255,0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.surg-tray.drop { border-color: var(--ok); box-shadow: 0 0 30px rgba(57,255,20,0.35); }
+.surg-tray-label { color: var(--neon-cyan); font-size: 14px; letter-spacing: 0.05em; }
+.surg-tray-count { font-size: 18px; font-weight: 700; color: var(--text-0); }
+.surg-frag-tray { display: inline-block; color: #ffaa44; font-size: 14px; animation: frag-drop-in 0.4s ease; }
+@keyframes frag-drop-in { from{transform:translateY(-20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+/* ---------- 死亡证明签字 ---------- */
+.mg-sign { position: absolute; inset: 0; }
+.sign-terminal {
+    position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+    width: 420px; max-width: 88vw;
+    background: rgba(8,14,22,0.92);
+    border: 1px solid rgba(255,59,92,0.25); border-radius: 10px;
+    box-shadow: 0 0 30px rgba(255,59,92,0.1), inset 0 0 30px rgba(0,0,0,0.5);
+    overflow: hidden;
+}
+.sign-titlebar { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; background: rgba(255,59,92,0.08); border-bottom: 1px solid rgba(255,59,92,0.2); font-size: 12px; color: var(--text-1); }
+.sign-form { padding: 22px 24px; }
+.sign-field { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 15px; color: var(--text-0); }
+.sign-label { color: var(--text-1); font-size: 14px; min-width: 70px; }
+.sign-value { font-weight: 600; letter-spacing: 0.04em; }
+.sign-danger { color: var(--danger); text-shadow: 0 0 6px rgba(255,59,92,0.4); }
+.sign-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 12px 0; }
+.sign-canvas-wrap { position: relative; margin-top: 10px; width: 340px; height: 100px; max-width: 100%; background: rgba(10,16,24,0.6); border: 1px solid rgba(0,240,255,0.3); border-radius: 6px; overflow: hidden; cursor: crosshair; }
+.sign-canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; }
+.sign-hint { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--text-1); font-size: 13px; letter-spacing: 0.05em; pointer-events: none; transition: opacity 0.3s ease; }
+
+/* ---------- 义肢修复 ---------- */
+.mg-repair { position: absolute; inset: 0; }
+.repair-terminal {
+    position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+    width: 500px; max-width: 90vw; min-height: 340px;
+    background: rgba(8,14,22,0.9);
+    border: 1px solid rgba(0,240,255,0.25); border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0,240,255,0.1), inset 0 0 30px rgba(0,0,0,0.5);
+    overflow: visible;
+    transition: border-color 0.8s ease, box-shadow 0.8s ease;
+}
+.repair-terminal.repaired { border-color: var(--ok); box-shadow: 0 0 40px rgba(57,255,20,0.3), inset 0 0 30px rgba(57,255,20,0.08); }
+.repair-titlebar { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; background: rgba(0,240,255,0.06); border-bottom: 1px solid rgba(0,240,255,0.18); font-size: 12px; color: var(--text-1); }
+.repair-diag { padding: 16px 20px; }
+.repair-status { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.repair-ok { font-size: 13px; color: var(--ok); padding: 3px 10px; background: rgba(57,255,20,0.08); border: 1px solid rgba(57,255,20,0.2); border-radius: 4px; }
+.repair-issues-title { font-size: 14px; color: var(--warn); margin-bottom: 10px; text-shadow: 0 0 6px rgba(255,179,0,0.3); }
+.repair-modules { position: relative; min-height: 260px; padding: 4px; }
+
+.repair-module {
+    position: absolute; width: 380px; max-width: 78vw;
+    padding: 12px 16px;
+    background: rgba(255,59,92,0.08);
+    border: 1px solid rgba(255,59,92,0.35); border-radius: 8px;
+    display: flex; align-items: center; gap: 12px;
+    cursor: grab;
+    animation: module-blink 0.8s ease-in-out infinite;
+    box-shadow: 0 0 16px rgba(255,59,92,0.15);
+    z-index: 5; transition: box-shadow 0.2s ease;
+    touch-action: none;
+}
+.repair-module.dragging { cursor: grabbing; z-index: 50; box-shadow: 0 0 30px rgba(0,240,255,0.4); border-color: var(--neon-cyan); animation: none; }
+.repair-module.snap-back { animation: snap-shake 0.3s ease; }
+.repair-module.recycling { animation: none; border-color: var(--ok); box-shadow: 0 0 20px rgba(57,255,20,0.4); pointer-events: none; }
+@keyframes module-blink { 0%,100%{border-color:rgba(255,59,92,0.35);box-shadow:0 0 16px rgba(255,59,92,0.15)} 50%{border-color:rgba(255,100,100,0.55);box-shadow:0 0 24px rgba(255,59,92,0.3)} }
+@keyframes snap-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+.rm-name { font-family: "SFMono-Regular", Consolas, monospace; font-size: 13px; color: var(--danger); font-weight: 600; letter-spacing: 0.04em; min-width: 100px; }
+.rm-desc { font-size: 13px; color: var(--text-1); flex: 1; }
+.rm-severity { font-size: 12px; color: var(--warn); padding: 2px 8px; background: rgba(255,179,0,0.1); border-radius: 4px; }
+
+.repair-bin {
+    position: absolute; right: 5%; bottom: 10%;
+    width: 140px; height: 100px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px;
+    border: 2px dashed rgba(255,59,92,0.35); border-radius: 12px;
+    background: rgba(255,42,109,0.06);
+    color: var(--danger); font-size: 13px;
+    box-shadow: 0 0 22px rgba(255,42,109,0.12);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+.repair-bin.hover { border-color: var(--neon-cyan); border-style: solid; background: rgba(0,240,255,0.14); box-shadow: 0 0 34px rgba(0,240,255,0.45); transform: scale(1.08); }
+.repair-bin.active { border-color: var(--ok); border-style: solid; background: rgba(57,255,20,0.12); box-shadow: 0 0 30px rgba(57,255,20,0.3); }
+.repair-bin-icon { font-size: 26px; }
+.repair-bin-text { font-size: 13px; letter-spacing: 0.04em; }
+.repair-bin-counter { font-size: 16px; font-weight: 700; color: var(--neon-cyan); }

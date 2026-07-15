@@ -1,0 +1,76 @@
+/* =========================================================
+   第一章 · 小游戏专属样式
+   补偿金滑块 + 赊账清除 + 警察枪击
+   ========================================================= */
+
+/* ---------- 补偿金滑块 ---------- */
+.mg-comp { position: absolute; inset: 0; }
+.comp-desk {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(50% 40% at 50% 35%, rgba(255,179,0,0.05), transparent 70%),
+                linear-gradient(160deg, rgba(18,16,12,0.7), rgba(10,10,18,0.8));
+}
+.comp-doc {
+    width: 400px; padding: 30px 32px;
+    background: linear-gradient(160deg, #f4efe4, #e8e2d5);
+    color: #2a2a2a; border-radius: 4px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.5);
+    font-size: 15px; line-height: 1.8;
+}
+.comp-doc-head { font-size: 16px; font-weight: 700; letter-spacing: 0.08em; border-bottom: 1px solid rgba(0,0,0,0.2); padding-bottom: 10px; margin-bottom: 14px; }
+.comp-name { font-size: 18px; color: #6a0000; font-weight: 600; margin: 8px 0; }
+.comp-row { display: flex; align-items: center; gap: 10px; margin: 12px 0; }
+.comp-label { color: #666; font-size: 14px; }
+.comp-value { color: #333; font-weight: 600; font-size: 18px; }
+.comp-slider-wrap { position: absolute; bottom: 14%; left: 50%; transform: translateX(-50%); width: 420px; max-width: 80vw; text-align: center; }
+.comp-slider-track { position: relative; width: 100%; height: 6px; background: linear-gradient(90deg, #4a4a4a, #888888, #b0b0b0); border-radius: 3px; cursor: pointer; }
+.comp-slider-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta)); border-radius: 3px; transition: width 80ms ease; }
+.comp-slider-thumb { position: absolute; top: 50%; width: 24px; height: 24px; border-radius: 50%; background: var(--text-0); border: 2px solid var(--neon-cyan); box-shadow: 0 0 14px rgba(0,240,255,0.5); transform: translate(-50%, -50%); cursor: grab; transition: box-shadow 160ms ease; }
+.comp-slider-thumb:active { cursor: grabbing; box-shadow: 0 0 20px rgba(0,240,255,0.8); }
+.comp-slider-labels { display: flex; justify-content: space-between; margin-top: 8px; color: var(--text-1); font-size: 13px; letter-spacing: 0.04em; }
+.comp-confirm { margin-top: 16px; padding: 10px 36px; background: rgba(0,240,255,0.12); border: 1px solid var(--neon-cyan); border-radius: 8px; color: var(--neon-cyan); font-family: var(--font-cjk); font-size: 15px; cursor: pointer; transition: background 200ms ease, box-shadow 200ms ease; }
+.comp-confirm:hover { background: rgba(0,240,255,0.25); box-shadow: 0 0 18px rgba(0,240,255,0.35); }
+
+/* ---------- 赊账清除 ---------- */
+.mg-debt { position: absolute; inset: 0; }
+.debt-terminal {
+    position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
+    width: 480px; max-width: 86vw; height: 60%;
+    background: rgba(8,14,22,0.9);
+    border: 1px solid rgba(255,179,0,0.3); border-radius: 10px;
+    box-shadow: 0 0 30px rgba(255,179,0,0.12), inset 0 0 30px rgba(0,0,0,0.5);
+    overflow: hidden;
+    font-family: "SFMono-Regular", Consolas, monospace;
+}
+.debt-titlebar { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; background: rgba(255,179,0,0.08); border-bottom: 1px solid rgba(255,179,0,0.2); font-size: 12px; color: var(--text-1); }
+.debt-table { width: 100%; padding: 12px; color: #c0c8d0; font-size: 13px; }
+.debt-header { display: flex; padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--warn); font-weight: 600; }
+.debt-header span { flex: 1; }
+.debt-row { display: flex; padding: 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 160ms ease; cursor: default; }
+.debt-row span { flex: 1; }
+.debt-row.own-record { background: rgba(255,59,92,0.08); border-left: 2px solid var(--danger); }
+.debt-row.own-record:hover { background: rgba(255,59,92,0.16); }
+.debt-clear-btn { flex: 0 0 60px !important; padding: 2px 10px; background: rgba(255,59,92,0.15); border: 1px solid rgba(255,59,92,0.5); border-radius: 4px; color: var(--danger); font-family: "SFMono-Regular", Consolas, monospace; font-size: 12px; cursor: pointer; text-align: center; transition: background 160ms ease, box-shadow 160ms ease; }
+.debt-clear-btn:hover { background: rgba(255,59,92,0.3); box-shadow: 0 0 12px rgba(255,59,92,0.4); }
+.debt-clear-btn.cleared { background: rgba(57,255,20,0.12); border-color: var(--ok); color: var(--ok); pointer-events: none; }
+
+/* ---------- 警察枪击 ---------- */
+.mg-shoot { position: absolute; inset: 0; overflow: hidden; background: rgba(4,4,8,0.75); }
+.shoot-scene { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.shoot-view {
+    position: relative; width: 100%; height: 100%;
+    background: radial-gradient(ellipse 60% 50% at 55% 45%, rgba(30,40,60,0.4), rgba(4,6,12,0.85)),
+                linear-gradient(180deg, rgba(10,14,24,0.6), rgba(4,4,10,0.8));
+    overflow: hidden;
+}
+.shoot-vignette-heavy { position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 180px 40px rgba(0,0,0,0.85); }
+.shoot-alley { position: absolute; bottom: 0; left: 0; right: 0; height: 55%; background: linear-gradient(180deg, rgba(20,22,28,0.3), rgba(15,12,10,0.7)); border-top: 1px solid rgba(100,100,120,0.15); }
+.shoot-target { position: absolute; width: 48px; height: 90px; border-radius: 4px; background: rgba(160,160,180,0.2); border: 1px solid rgba(200,200,220,0.15); transform: translate(-50%,-50%); transition: opacity 1s ease; }
+.shoot-target::after { content:""; position:absolute; top:8px; left:50%; transform:translateX(-50%); width:20px; height:20px; border-radius:50%; background:rgba(200,200,220,0.35); box-shadow:0 0 10px rgba(180,180,200,0.2); }
+.shoot-crosshair { position: absolute; pointer-events: none; width: 40px; height: 40px; transform: translate(-50%,-50%); z-index: 5; }
+.shoot-crosshair::before, .shoot-crosshair::after { content:""; position:absolute; background:var(--neon-cyan); opacity:0.7; }
+.shoot-crosshair::before { top:50%; left:0; right:0; height:1px; transform:translateY(-50%); }
+.shoot-crosshair::after { left:50%; top:0; bottom:0; width:1px; transform:translateX(-50%); }
+.shoot-flash { position: absolute; inset: 0; background: rgba(255,255,200,0.85); opacity: 0; pointer-events: none; z-index: 10; transition: opacity 40ms ease; }
+.shoot-flash.fire { opacity: 1; transition: opacity 0ms; }

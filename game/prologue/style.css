@@ -1,0 +1,104 @@
+/* =========================================================
+   序章 · 小游戏专属样式
+   代码框选回收 + 盖章
+   ========================================================= */
+
+/* ---------- 代码框选回收 ---------- */
+.mg-code { position: absolute; inset: 0; }
+.cc-screen {
+    position: absolute; top: 150px; left: 6%; width: 58%; height: 58%;
+    background: rgba(8,12,20,0.82);
+    border: 1px solid rgba(0,240,255,0.3); border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0,240,255,0.12), inset 0 0 30px rgba(0,0,0,0.6);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+.cc-titlebar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 12px;
+    background: rgba(0,240,255,0.08);
+    border-bottom: 1px solid rgba(0,240,255,0.2);
+    font-size: 12px; color: var(--text-1);
+}
+.cc-body { padding: 10px 6px; font-size: 13.5px; line-height: 1.85; }
+.cc-line {
+    padding: 1px 10px; white-space: pre;
+    color: #9fb4c9;
+    transition: opacity 360ms ease, transform 360ms ease, background 160ms ease;
+}
+.cc-line.marked { color: #7e879c; background: rgba(136,146,176,0.10); border-left: 2px solid rgba(136,146,176,0.55); }
+.cc-line.selected { background: rgba(0,240,255,0.20); outline: 1px solid var(--neon-cyan); color: var(--text-0); }
+.cc-line.recycled { opacity: 0; transform: translateX(26px); }
+.cc-line.anomaly { color: var(--danger); border-left-color: var(--danger); text-shadow: 0 0 8px rgba(255,59,92,0.6); }
+.cc-sel {
+    position: absolute; border: 1px dashed var(--neon-cyan);
+    background: rgba(0,240,255,0.08); pointer-events: none; display: none;
+}
+.cc-group {
+    position: absolute; display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--neon-cyan); background: rgba(0,240,255,0.14);
+    color: var(--neon-cyan); font-size: 13px; border-radius: 6px;
+    cursor: grab; pointer-events: auto;
+    box-shadow: 0 0 16px rgba(0,240,255,0.3); z-index: 10;
+}
+.cc-group:active { cursor: grabbing; }
+.cc-bin {
+    position: absolute; right: 5%; bottom: 8%;
+    width: 156px; height: 96px;
+    border: 1px dashed var(--neon-magenta); border-radius: 12px;
+    background: rgba(255,42,109,0.08);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 6px; color: var(--neon-magenta); font-size: 14px;
+    box-shadow: 0 0 22px rgba(255,42,109,0.18); z-index: 10;
+}
+.cc-bin-ico { font-size: 26px; }
+
+/* ---------- 盖章 ---------- */
+.mg-stamp { position: absolute; inset: 0; }
+.stamp-desk {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(60% 50% at 50% 40%, rgba(255,179,0,0.06), transparent 70%),
+                linear-gradient(160deg, rgba(20,16,10,0.6), rgba(10,10,18,0.7));
+}
+.stamp-doc {
+    position: relative; width: 320px; height: 430px; padding: 30px 26px;
+    background: linear-gradient(160deg, #f4efe4, #e6dfd0);
+    color: #2a2a2a; border-radius: 4px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.55);
+    transition: box-shadow 300ms ease, transform 300ms ease;
+}
+.stamp-doc.own { box-shadow: 0 0 38px rgba(255,59,92,0.45), 0 18px 50px rgba(0,0,0,0.55); }
+.stamp-doc.sealed::after {
+    content: "已 裁"; position: absolute; right: 28px; top: 150px;
+    width: 96px; height: 96px;
+    border: 3px solid #8b0000; border-radius: 50%;
+    color: #8b0000; display: flex; align-items: center; justify-content: center;
+    transform: rotate(-16deg); font-size: 20px; font-weight: 700; letter-spacing: 0.1em;
+    opacity: 0.85; box-shadow: 0 0 12px rgba(139,0,0,0.5);
+    background: radial-gradient(circle at 50% 50%, rgba(180,0,0,0.08) 0%, transparent 70%),
+                conic-gradient(from 0deg, rgba(139,0,0,0.12) 0deg 6deg, transparent 6deg 20deg, rgba(139,0,0,0.12) 20deg 26deg, transparent 26deg 40deg, rgba(139,0,0,0.12) 40deg 46deg, transparent 46deg 60deg, rgba(139,0,0,0.12) 60deg 66deg, transparent 66deg 80deg, rgba(139,0,0,0.12) 80deg 86deg, transparent 86deg 100deg, rgba(139,0,0,0.12) 100deg 106deg, transparent 106deg 120deg, rgba(139,0,0,0.12) 120deg 126deg, transparent 126deg 140deg, rgba(139,0,0,0.12) 140deg 146deg, transparent 146deg 160deg, rgba(139,0,0,0.12) 160deg 166deg, transparent 166deg 180deg, rgba(139,0,0,0.12) 180deg 186deg, transparent 186deg 200deg, rgba(139,0,0,0.12) 200deg 206deg, transparent 206deg 220deg, rgba(139,0,0,0.12) 220deg 226deg, transparent 226deg 240deg, rgba(139,0,0,0.12) 240deg 246deg, transparent 246deg 260deg, rgba(139,0,0,0.12) 260deg 266deg, transparent 266deg 280deg, rgba(139,0,0,0.12) 280deg 286deg, transparent 286deg 300deg, rgba(139,0,0,0.12) 300deg 306deg, transparent 306deg 320deg, rgba(139,0,0,0.12) 320deg 326deg, transparent 326deg 340deg, rgba(139,0,0,0.12) 340deg 346deg, transparent 346deg 360deg);
+}
+.stamp-doc-head { font-size: 14px; letter-spacing: 0.2em; color: #6a6a6a; border-bottom: 1px solid rgba(0,0,0,0.25); padding-bottom: 10px; }
+.stamp-doc-name { margin-top: 18px; font-size: 22px; font-weight: 700; letter-spacing: 0.04em; }
+.stamp-doc.own .stamp-doc-name { color: #9a1326; }
+.stamp-doc-lines { margin-top: 30px; }
+.stamp-doc-lines span { display: block; height: 9px; margin: 14px 0; border-radius: 2px; background: rgba(0,0,0,0.14); }
+.stamp-pile { position: absolute; right: 8%; bottom: 12%; color: var(--text-1); font-size: 14px; letter-spacing: 0.05em; }
+.stamp-tool {
+    position: absolute; right: 12%; top: 16%;
+    width: 96px; height: 96px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, rgba(180,0,0,0.3) 0%, transparent 70%),
+                conic-gradient(from 0deg, #8b0000, #5c0000 15deg, #a01010 30deg, #6b0000 45deg, #8b0000 60deg, #4a0000 75deg, #9b1010 90deg, #5c0000 105deg, #8b0000 120deg, #4a0000 135deg, #a01010 150deg, #6b0000 165deg, #8b0000 180deg, #5c0000 195deg, #a01010 210deg, #6b0000 225deg, #8b0000 240deg, #4a0000 255deg, #9b1010 270deg, #5c0000 285deg, #8b0000 300deg, #6b0000 315deg, #a01010 330deg, #4a0000 345deg, #8b0000 360deg),
+                radial-gradient(circle at 50% 50%, #c41e3a 0%, #8b0000 35%, #4a0000 70%, #2a0000 100%);
+    border: 3px solid #6b1010;
+    display: flex; align-items: center; justify-content: center;
+    cursor: grab;
+    box-shadow: 0 0 30px rgba(180,0,0,0.55), 0 0 60px rgba(100,0,0,0.3), inset 0 0 18px rgba(0,0,0,0.5);
+    touch-action: none; overflow: hidden;
+}
+.stamp-tool::before { content: ""; position: absolute; inset: 4px; border-radius: 50%; border: 1.5px solid rgba(200,80,60,0.35); background: transparent; box-shadow: inset 0 0 10px rgba(0,0,0,0.4); }
+.stamp-tool::after { content: ""; position: absolute; inset: 10px; border-radius: 50%; border: 2px solid rgba(180,60,40,0.25); background: repeating-conic-gradient(rgba(220,60,60,0.08) 0deg 3deg, transparent 3deg 11deg, rgba(200,40,40,0.06) 11deg 14deg, transparent 14deg 22deg); box-shadow: inset 0 0 8px rgba(0,0,0,0.5); }
+.stamp-tool:active { cursor: grabbing; }
+.stamp-tool.pressing { filter: brightness(1.4) saturate(1.25) drop-shadow(0 0 14px rgba(180,0,0,0.8)); }
+.stamp-face { position: relative; z-index: 1; font-size: 22px; font-weight: 700; color: #f0d0c0; text-shadow: 0 1px 3px rgba(0,0,0,0.6), 0 0 8px rgba(200,0,0,0.5); letter-spacing: 0.12em; transform: rotate(-3deg); }

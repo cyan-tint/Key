@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>密钥 · KEY</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- ============ 全屏沉浸式舞台 ============ -->
+    <div id="stage">
+
+        <!-- 赛博朋克屏幕边框 -->
+        <div class="screen-frame" aria-hidden="true">
+            <div class="frame-corner tl"></div>
+            <div class="frame-corner tr"></div>
+            <div class="frame-corner bl"></div>
+            <div class="frame-corner br"></div>
+        </div>
+
+        <!-- 场景层：第一人称背景（CSS 渲染 + .scene-bg 图片位） -->
+        <div id="scene" class="scene">
+            <div class="scene-bg"></div>       <!-- 背景图钩子：AI 生成背景图 -->
+            <div class="scene-tint"></div>     <!-- 霓虹色调叠层 -->
+            <div class="scene-vignette"></div> <!-- 第一人称暗角 -->
+            <div class="scanlines"></div>      <!-- 扫描线 -->
+            <div class="scene-glow"></div>     <!-- 霓虹光斑 -->
+        </div>
+
+        <!-- 小游戏覆盖层：交互层（代码回收 / 盖章） -->
+        <div id="minigame-layer" class="minigame-layer" aria-hidden="true"></div>
+
+        <!-- 系统提示条（顶部居中） -->
+        <div id="sys-toast" class="sys-toast" aria-hidden="true"></div>
+
+        <!-- 交互区：选项按钮 + 底部对话框 + 密钥图标 -->
+        <div id="ui-layer" class="ui-layer">
+            <!-- 密钥图标（灰色阴影，屏幕右下角，对话框上方） -->
+            <img id="key-icon" class="key-icon" src="assets/images/icon-key.png" alt="密钥" aria-hidden="true">
+
+            <!-- 选项按钮区（位于对话框上方） -->
+            <div id="choices" class="choices" aria-hidden="true"></div>
+
+            <!-- 底部对话框（打字机） -->
+            <div id="dialog" class="dialog" aria-hidden="true">
+                <div class="dialog-speaker" id="dialog-speaker"></div>
+                <div class="dialog-body">
+                    <span id="dialog-text" class="dialog-text"></span><span class="dialog-cursor" id="dialog-cursor">▋</span>
+                </div>
+                <div class="dialog-hint" id="dialog-hint">点击继续 ▸</div>
+            </div>
+        </div>
+
+        <!-- 中心弹窗（报错 / 确认，阻塞式） -->
+        <div id="popup-overlay" class="popup-overlay" aria-hidden="true">
+            <div class="popup" role="dialog">
+                <div class="popup-titlebar">
+                    <span class="popup-dot"></span>
+                    <span id="popup-title" class="popup-title">系统提示</span>
+                </div>
+                <div id="popup-message" class="popup-message"></div>
+                <div id="popup-actions" class="popup-actions"></div>
+            </div>
+        </div>
+
+        <!-- 全屏淡入淡出遮罩 -->
+        <div id="fade-overlay" class="fade-overlay"></div>
+
+        <!-- 震惊效果覆盖层（屏幕边缘红色脉冲） -->
+        <div id="shock-overlay" aria-hidden="true"></div>
+
+        <!-- 章节标题覆盖层 -->
+        <div id="chapter-overlay" class="chapter-overlay" aria-hidden="true">
+            <div id="chapter-num" class="chapter-num"></div>
+            <div id="chapter-name" class="chapter-name"></div>
+            <div id="chapter-subname" class="chapter-subname"></div>
+        </div>
+
+        <!-- 开始遮罩 -->
+        <div id="start-overlay" class="start-overlay">
+            <div class="start-inner">
+                <h1 class="start-title" data-text="密钥">密钥</h1>
+                <p class="start-subtitle">K　E　Y</p>
+                <p class="start-desc">一部第一人称赛博朋克叙事 · 完整版</p>
+                <button id="start-btn" class="start-btn">接入系统</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 按序加载：data → input → renderer → minigames → game -->
+    <script src="js/data.js"></script>
+    <script src="js/input.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/minigames.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
