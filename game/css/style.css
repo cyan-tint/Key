@@ -224,7 +224,7 @@ html, body {
     top: 32px;
     left: 50%;
     transform: translateX(-50%) translateY(-16px);
-    z-index: 40;
+    z-index: 75;
     max-width: 80vw;
     padding: 12px 24px;
     background: var(--glass-bg);
@@ -360,8 +360,6 @@ html, body {
     position: relative;
     margin: 0 auto 28px;
     width: min(960px, 88vw);
-    min-height: 132px;
-    padding: 20px 28px 34px;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: 14px;
@@ -374,11 +372,50 @@ html, body {
     transform: translateY(20px);
     transition: opacity 400ms ease, transform 400ms ease;
     display: none;
+    /* Flex 布局，容纳立绘 */
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    overflow: visible;
 }
 .dialog.show {
-    display: block;
+    display: flex;
     opacity: 1;
     transform: translateY(0);
+}
+
+/* 主角立绘（浮动于对话框左侧，不占空间时隐藏） */
+.dialog-portrait {
+    display: none;
+    flex-shrink: 0;
+    width: 130px;
+    height: auto;
+    max-height: 280px;
+    margin-left: -30px;
+    margin-right: 4px;
+    object-fit: contain;
+    object-position: bottom;
+    align-self: flex-end;
+    filter: drop-shadow(0 0 18px rgba(181, 55, 242, 0.3)) drop-shadow(0 0 40px rgba(0, 240, 255, 0.15));
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 500ms ease, transform 500ms ease;
+    pointer-events: none;
+    z-index: 2;
+}
+.dialog.has-portrait .dialog-portrait {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* 对话框内容区（文字部分） */
+.dialog-content {
+    position: relative;
+    flex: 1;
+    padding: 20px 28px 34px;
+    min-width: 0;
 }
 /* 左侧霓虹装饰条 */
 .dialog::before {
@@ -391,6 +428,7 @@ html, body {
     border-radius: 3px;
     background: linear-gradient(var(--neon-cyan), var(--neon-magenta));
     box-shadow: 0 0 12px var(--neon-cyan);
+    z-index: 1;
 }
 .dialog-speaker {
     min-height: 20px;
@@ -638,6 +676,543 @@ html, body {
     color: var(--text-1);
     letter-spacing: 0.15em;
     opacity: 0.7;
+}
+
+/* =========================================================
+   义肢连接系统界面 · Prosthetic HUD
+   ========================================================= */
+.prosthetic-hud {
+    position: absolute;
+    inset: 0;
+    z-index: 70;
+    display: flex;
+    flex-direction: column;
+    background: rgba(3, 5, 12, 0.94);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 500ms ease;
+    overflow: hidden;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, "Courier New", monospace;
+}
+.prosthetic-hud.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* 网格背景 */
+.hud-grid-bg {
+    position: absolute;
+    inset: -60px;
+    background-image:
+        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    transform: perspective(800px) rotateX(8deg);
+    animation: hud-grid-drift 20s linear infinite;
+    pointer-events: none;
+}
+@keyframes hud-grid-drift {
+    0% { background-position: 0 0, 0 0; }
+    100% { background-position: 40px 40px, 40px 40px; }
+}
+
+/* HUD 扫描线 */
+.hud-scanlines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0, 10, 20, 0.15) 4px,
+        rgba(0, 10, 20, 0.15) 5px
+    );
+    animation: hud-scan-move 6s linear infinite;
+    z-index: 1;
+}
+@keyframes hud-scan-move {
+    0% { background-position-y: 0; }
+    100% { background-position-y: 80px; }
+}
+
+/* 四角光晕 */
+.hud-corner-glow {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    pointer-events: none;
+    z-index: 1;
+}
+.hud-corner-glow.tl {
+    top: 0; left: 0;
+    background: radial-gradient(circle at 0 0, rgba(0, 240, 255, 0.08), transparent 70%);
+}
+.hud-corner-glow.tr {
+    top: 0; right: 0;
+    background: radial-gradient(circle at 100% 0, rgba(0, 240, 255, 0.06), transparent 70%);
+}
+.hud-corner-glow.bl {
+    bottom: 0; left: 0;
+    background: radial-gradient(circle at 0 100%, rgba(181, 55, 242, 0.06), transparent 70%);
+}
+.hud-corner-glow.br {
+    bottom: 0; right: 0;
+    background: radial-gradient(circle at 100% 100%, rgba(181, 55, 242, 0.06), transparent 70%);
+}
+
+/* ---------- 顶部状态栏 ---------- */
+.hud-topbar {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 24px;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.12);
+    background: rgba(0, 240, 255, 0.03);
+}
+.hud-logo {
+    font-size: 13px;
+    color: var(--neon-cyan);
+    letter-spacing: 0.08em;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+    animation: hud-logo-flicker 4s infinite;
+}
+@keyframes hud-logo-flicker {
+    0%, 100% { opacity: 1; }
+    97% { opacity: 1; }
+    98% { opacity: 0.3; }
+    99% { opacity: 1; }
+}
+.hud-topbar-right {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+.hud-sig {
+    font-size: 12px;
+    color: var(--text-1);
+    letter-spacing: 0.04em;
+}
+.hud-clock {
+    font-size: 12px;
+    color: var(--neon-cyan);
+    letter-spacing: 0.06em;
+    min-width: 42px;
+}
+
+/* ---------- 主内容区 ---------- */
+.hud-main {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    padding: 20px 40px;
+    min-height: 0;
+}
+
+/* ---------- 雷达面板 ---------- */
+.hud-radar-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+.hud-radar {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 240, 255, 0.18);
+    box-shadow:
+        0 0 30px rgba(0, 240, 255, 0.08),
+        inset 0 0 40px rgba(0, 240, 255, 0.05);
+    overflow: hidden;
+}
+
+/* 同心雷达环 */
+.hud-radar-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 240, 255, 0.1);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+.hud-radar-ring.r1 { width: 60px; height: 60px;  }
+.hud-radar-ring.r2 { width: 120px; height: 120px; }
+.hud-radar-ring.r3 { width: 180px; height: 180px; }
+
+/* 雷达脉冲波纹 */
+.hud-radar::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    transform: translate(-50%, -50%);
+    animation: hud-radar-pulse 2.5s ease-out infinite;
+    pointer-events: none;
+}
+.hud-radar.scanning::before {
+    animation: hud-radar-pulse 1.2s ease-out infinite;
+    border-color: rgba(0, 240, 255, 0.7);
+}
+.hud-radar.connected::before {
+    animation: hud-radar-pulse 0.8s ease-out infinite;
+    border-color: rgba(57, 255, 20, 0.6);
+}
+@keyframes hud-radar-pulse {
+    0% { width: 0; height: 0; opacity: 1; }
+    100% { width: 240px; height: 240px; opacity: 0; }
+}
+
+/* 雷达扫描线 */
+.hud-radar-sweep {
+    position: absolute;
+    top: 0; left: 50%;
+    width: 50%;
+    height: 100%;
+    background: conic-gradient(
+        from 0deg,
+        rgba(0, 240, 255, 0.12) 0deg,
+        rgba(0, 240, 255, 0.02) 60deg,
+        transparent 90deg
+    );
+    transform-origin: 0% 50%;
+    animation: hud-radar-swirl 3s linear infinite;
+    pointer-events: none;
+}
+.hud-radar.scanning .hud-radar-sweep {
+    animation: hud-radar-swirl 1s linear infinite;
+    background: conic-gradient(
+        from 0deg,
+        rgba(0, 240, 255, 0.25) 0deg,
+        rgba(0, 240, 255, 0.05) 45deg,
+        transparent 70deg
+    );
+}
+.hud-radar.connected .hud-radar-sweep {
+    animation: hud-radar-swirl 2s linear infinite;
+    background: conic-gradient(
+        from 0deg,
+        rgba(57, 255, 20, 0.15) 0deg,
+        rgba(57, 255, 20, 0.03) 40deg,
+        transparent 60deg
+    );
+}
+@keyframes hud-radar-swirl {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 雷达中心点 */
+.hud-radar-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.8), 0 0 24px rgba(0, 240, 255, 0.4);
+    z-index: 2;
+    animation: hud-center-pulse 2s ease-in-out infinite;
+}
+@keyframes hud-center-pulse {
+    0%, 100% { box-shadow: 0 0 12px rgba(0, 240, 255, 0.8), 0 0 24px rgba(0, 240, 255, 0.4); }
+    50% { box-shadow: 0 0 18px rgba(0, 240, 255, 1), 0 0 36px rgba(0, 240, 255, 0.6); }
+}
+
+/* 雷达上的设备标记点 */
+.hud-radar-dot {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--neon-magenta);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(255, 42, 109, 0.8);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    z-index: 3;
+    pointer-events: none;
+}
+.hud-radar-dot.show {
+    opacity: 1;
+    animation: hud-dot-blink 0.8s ease-in-out infinite;
+}
+.hud-radar-dot.connected {
+    background: var(--ok);
+    box-shadow: 0 0 14px rgba(57, 255, 20, 0.8);
+    animation: none;
+}
+@keyframes hud-dot-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.hud-radar-dot-label {
+    position: absolute;
+    font-size: 10px;
+    color: var(--neon-magenta);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+}
+.hud-radar-dot-label.show {
+    opacity: 1;
+}
+
+/* 雷达状态文字 */
+.hud-radar-label {
+    font-size: 13px;
+    color: var(--neon-cyan);
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+    animation: hud-label-breathe 2s ease-in-out infinite;
+}
+@keyframes hud-label-breathe {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+/* ---------- 设备信息面板 ---------- */
+.hud-info-panel {
+    width: 380px;
+    max-width: 44vw;
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    border-radius: 8px;
+    background: rgba(5, 10, 20, 0.7);
+    box-shadow:
+        0 0 30px rgba(0, 240, 255, 0.05),
+        inset 0 0 30px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.hud-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.12);
+    background: rgba(0, 240, 255, 0.04);
+    font-size: 12px;
+    color: var(--text-1);
+    letter-spacing: 0.08em;
+}
+.hud-panel-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+}
+.hud-info-rows {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+.hud-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+.hud-row-label {
+    font-size: 11px;
+    color: var(--text-1);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+.hud-row-value {
+    font-size: 13px;
+    color: var(--text-0);
+    letter-spacing: 0.04em;
+    text-align: right;
+}
+.hud-sig-bars {
+    color: var(--neon-cyan);
+    letter-spacing: 2px;
+    margin-right: 8px;
+}
+.hud-sig-pct {
+    color: var(--neon-cyan);
+    font-weight: 600;
+}
+
+/* 状态标签 */
+.hud-status-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+}
+.hud-status-tag.offline {
+    color: var(--text-1);
+    background: rgba(136, 146, 176, 0.15);
+    border: 1px solid rgba(136, 146, 176, 0.2);
+}
+.hud-status-tag.scanning {
+    color: var(--warn);
+    background: rgba(255, 179, 0, 0.12);
+    border: 1px solid rgba(255, 179, 0, 0.25);
+    animation: hud-status-blink 1s ease-in-out infinite;
+}
+.hud-status-tag.connected {
+    color: var(--ok);
+    background: rgba(57, 255, 20, 0.1);
+    border: 1px solid rgba(57, 255, 20, 0.25);
+    text-shadow: 0 0 6px rgba(57, 255, 20, 0.5);
+}
+@keyframes hud-status-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* 日志区 */
+.hud-log {
+    flex: 1;
+    min-height: 60px;
+    padding: 10px 16px;
+    border-top: 1px solid rgba(0, 240, 255, 0.08);
+    font-size: 11px;
+    color: var(--text-1);
+    line-height: 1.8;
+    letter-spacing: 0.03em;
+    overflow-y: auto;
+    max-height: 120px;
+}
+.hud-log .hud-log-line {
+    opacity: 0;
+    animation: hud-log-in 0.4s ease forwards;
+}
+.hud-log .hud-log-line.highlight {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 4px rgba(0, 240, 255, 0.3);
+}
+.hud-log .hud-log-line.success {
+    color: var(--ok);
+    text-shadow: 0 0 4px rgba(57, 255, 20, 0.3);
+}
+@keyframes hud-log-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- 底部状态栏 ---------- */
+.hud-bottombar {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 24px;
+    border-top: 1px solid rgba(0, 240, 255, 0.12);
+    background: rgba(0, 240, 255, 0.02);
+}
+.hud-bottombar-text {
+    font-size: 12px;
+    color: var(--neon-cyan);
+    letter-spacing: 0.06em;
+    text-shadow: 0 0 6px rgba(0, 240, 255, 0.4);
+    animation: hud-bottombar-blink 2s step-end infinite;
+}
+.hud-bottombar-text.ready {
+    color: var(--ok);
+    text-shadow: 0 0 6px rgba(57, 255, 20, 0.4);
+    animation: none;
+}
+@keyframes hud-bottombar-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+.hud-bottombar-hint {
+    font-size: 11px;
+    color: var(--text-1);
+    letter-spacing: 0.04em;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+.hud-bottombar-hint.show {
+    opacity: 0.7;
+}
+
+/* HUD 退出动画（整体 fade） */
+.prosthetic-hud.hide {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 500ms ease;
+}
+
+/* HUD 交互按钮区 */
+.hud-actions {
+    position: relative;
+    z-index: 3;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 0 24px 20px;
+}
+.hud-actions.show {
+    display: flex;
+}
+.hud-action-btn {
+    pointer-events: auto;
+    min-width: 280px;
+    max-width: 60vw;
+    padding: 12px 28px;
+    background: rgba(0, 240, 255, 0.08);
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    border-radius: 6px;
+    color: var(--neon-cyan);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    text-align: center;
+    cursor: pointer;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+    transition: background 200ms ease, box-shadow 200ms ease, transform 160ms ease;
+    opacity: 0;
+    animation: hud-btn-in 400ms ease forwards;
+}
+.hud-action-btn:nth-child(1) { animation-delay: 100ms; }
+.hud-action-btn:nth-child(2) { animation-delay: 200ms; }
+.hud-action-btn:nth-child(3) { animation-delay: 300ms; }
+.hud-action-btn:hover {
+    background: rgba(0, 240, 255, 0.18);
+    box-shadow: 0 0 24px rgba(0, 240, 255, 0.45), inset 0 0 12px rgba(0, 240, 255, 0.1);
+    transform: translateY(-2px);
+}
+.hud-action-btn:active {
+    transform: scale(0.97);
+}
+.hud-action-btn.locked {
+    pointer-events: none;
+    opacity: 0.35;
+    filter: grayscale(0.5);
+    border-color: rgba(136, 146, 176, 0.25);
+    box-shadow: none;
+    transform: none;
+}
+.hud-action-btn.picked {
+    border-color: var(--ok);
+    color: var(--ok);
+    box-shadow: 0 0 18px rgba(57, 255, 20, 0.4);
+    text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+}
+@keyframes hud-btn-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* =========================================================
@@ -1953,7 +2528,30 @@ html, body {
 
 @media (max-width: 640px) {
     .start-title { font-size: 56px; }
-    .dialog { width: 92vw; padding: 16px 20px 30px; }
+    .dialog { width: 92vw; }
+    .dialog-content { padding: 16px 20px 30px; }
     .dialog-body { font-size: 16px; }
+    .dialog-portrait { width: 100px; max-height: 240px; margin-left: -20px; margin-right: 2px; }
     .choice-btn { min-width: unset; width: 92vw; max-width: 92vw; }
+    /* HUD 移动端适配 */
+    .hud-main {
+        flex-direction: column;
+        gap: 20px;
+        padding: 12px 16px;
+    }
+    .hud-radar {
+        width: 160px;
+        height: 160px;
+    }
+    .hud-radar-ring.r3 { width: 120px; height: 120px; }
+    .hud-radar-ring.r2 { width: 80px; height: 80px; }
+    .hud-info-panel {
+        width: 100%;
+        max-width: 92vw;
+    }
+    .hud-topbar { padding: 8px 14px; }
+    .hud-logo { font-size: 11px; }
+    .hud-sig, .hud-clock { font-size: 10px; }
+    .hud-bottombar { padding: 6px 14px; }
+    .hud-bottombar-text { font-size: 10px; }
 }

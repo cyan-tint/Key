@@ -43,11 +43,15 @@
 
             <!-- 底部对话框（打字机） -->
             <div id="dialog" class="dialog" aria-hidden="true">
-                <div class="dialog-speaker" id="dialog-speaker"></div>
-                <div class="dialog-body">
-                    <span id="dialog-text" class="dialog-text"></span><span class="dialog-cursor" id="dialog-cursor">▋</span>
+                <!-- 主角立绘（仅在 speaker="你" 时显示） -->
+                <img id="dialog-portrait" class="dialog-portrait" src="assets/images/portrait.png" alt="主角" aria-hidden="true">
+                <div class="dialog-content">
+                    <div class="dialog-speaker" id="dialog-speaker"></div>
+                    <div class="dialog-body">
+                        <span id="dialog-text" class="dialog-text"></span><span class="dialog-cursor" id="dialog-cursor">▋</span>
+                    </div>
+                    <div class="dialog-hint" id="dialog-hint">点击继续 ▸</div>
                 </div>
-                <div class="dialog-hint" id="dialog-hint">点击继续 ▸</div>
             </div>
         </div>
 
@@ -68,6 +72,88 @@
 
         <!-- 震惊效果覆盖层（屏幕边缘红色脉冲） -->
         <div id="shock-overlay" aria-hidden="true"></div>
+
+        <!-- 义肢连接系统界面 HUD -->
+        <div id="prosthetic-hud" class="prosthetic-hud" aria-hidden="true">
+            <div class="hud-grid-bg"></div>
+            <div class="hud-scanlines"></div>
+            <div class="hud-corner-glow tl"></div>
+            <div class="hud-corner-glow tr"></div>
+            <div class="hud-corner-glow bl"></div>
+            <div class="hud-corner-glow br"></div>
+
+            <!-- 顶部状态栏 -->
+            <div class="hud-topbar">
+                <span class="hud-logo">◆ NEURAL_LINK v2.1.7</span>
+                <span class="hud-topbar-right">
+                    <span class="hud-sig" id="hud-sig">SIG: ░░░░░░░░░░ 0%</span>
+                    <span class="hud-clock" id="hud-clock">00:00</span>
+                </span>
+            </div>
+
+            <!-- 主界面 -->
+            <div class="hud-main">
+                <!-- 左侧：雷达扫描 -->
+                <div class="hud-radar-panel">
+                    <div class="hud-radar">
+                        <div class="hud-radar-ring r1"></div>
+                        <div class="hud-radar-ring r2"></div>
+                        <div class="hud-radar-ring r3"></div>
+                        <div class="hud-radar-sweep"></div>
+                        <div class="hud-radar-center"></div>
+                        <div class="hud-radar-dot" id="hud-radar-dot"></div>
+                        <div class="hud-radar-dot-label" id="hud-radar-dot-label"></div>
+                    </div>
+                    <div class="hud-radar-label" id="hud-radar-label">待命</div>
+                </div>
+
+                <!-- 右侧：设备信息面板 -->
+                <div class="hud-info-panel">
+                    <div class="hud-panel-header">
+                        <span class="hud-panel-dot"></span>
+                        <span>DEVICE_INFO</span>
+                    </div>
+                    <div class="hud-info-rows">
+                        <div class="hud-row">
+                            <span class="hud-row-label">OWNER</span>
+                            <span class="hud-row-value" id="hud-device-name">---</span>
+                        </div>
+                        <div class="hud-row">
+                            <span class="hud-row-label">MODEL</span>
+                            <span class="hud-row-value" id="hud-device-model">---</span>
+                        </div>
+                        <div class="hud-row">
+                            <span class="hud-row-label">SIGNAL</span>
+                            <span class="hud-row-value" id="hud-device-signal">
+                                <span class="hud-sig-bars" id="hud-sig-bars">▯▯▯▯▯▯▯▯▯▯</span>
+                                <span class="hud-sig-pct" id="hud-sig-pct">0%</span>
+                            </span>
+                        </div>
+                        <div class="hud-row">
+                            <span class="hud-row-label">RANGE</span>
+                            <span class="hud-row-value" id="hud-device-range">---</span>
+                        </div>
+                        <div class="hud-row">
+                            <span class="hud-row-label">STATUS</span>
+                            <span class="hud-row-value" id="hud-device-status">
+                                <span class="hud-status-tag offline">DISCONNECTED</span>
+                            </span>
+                        </div>
+                    </div>
+                    <!-- 日志滚动区 -->
+                    <div class="hud-log" id="hud-log"></div>
+                </div>
+            </div>
+
+            <!-- 底部状态栏 -->
+            <div class="hud-bottombar">
+                <span class="hud-bottombar-text" id="hud-bottombar-text">INITIALIZING PROTOCOL...</span>
+                <span class="hud-bottombar-hint" id="hud-bottombar-hint"></span>
+            </div>
+
+            <!-- HUD 交互按钮区 -->
+            <div class="hud-actions" id="hud-actions"></div>
+        </div>
 
         <!-- 章节标题覆盖层 -->
         <div id="chapter-overlay" class="chapter-overlay" aria-hidden="true">

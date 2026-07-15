@@ -112,7 +112,15 @@ window.STORY = {
       type: "narration",
       bg: "workstation",
       speaker: "旁白",
-      text: "「明天再说吧。」你起身拿起外套，走进夜色里。城市霓虹在窗外流动。",
+      text: "你起身拿起外套，走进夜色里。城市霓虹在窗外流动。",
+      next: "p_leave_thought"
+    },
+
+    p_leave_thought: {
+      type: "narration",
+      bg: "workstation",
+      speaker: "你",
+      text: "「明天再说吧。」",
       next: "p_awake"
     },
 
@@ -127,6 +135,14 @@ window.STORY = {
       text:
         "你回到公寓时已经很晚了。狭小的卧室，窗外是永不熄灭的赛博城夜景。" +
         "你穿着旧 T 恤躺靠在床上，翻来覆去睡不着。",
+      next: "p_tap_act"
+    },
+
+    p_tap_act: {
+      type: "narration",
+      bg: "bedroom",
+      speaker: "旁白",
+      text: "你打开超脑，又看到了那个陌生图标。你点了进去。",
       next: "p_tap"
     },
 
@@ -134,7 +150,7 @@ window.STORY = {
       type: "dialog",
       bg: "bedroom",
       speaker: "你",
-      text: "「睡不着……那图标到底是什么？」你打开超脑，又看到了那个陌生图标。你点了进去。",
+      text: "「睡不着……那图标到底是什么？」",
       choices: [
         { text: "点开图标", next: "p_scan" }
       ]
@@ -144,7 +160,12 @@ window.STORY = {
       type: "dialog",
       bg: "bedroom",
       speaker: "系统",
-      text: "界面里只有一个按钮——【扫描附近设备】。你随手按了下去。",
+      text: "密钥程序启动。神经链接协议初始化完成。界面弹出——【扫描附近设备】。",
+      hud: {
+        stage: "boot",
+        dotX: "62%",
+        dotY: "38%"
+      },
       choices: [
         { text: "【扫描附近设备】", next: "p_connected" }
       ]
@@ -154,11 +175,40 @@ window.STORY = {
       type: "dialog",
       bg: "bedroom",
       speaker: "系统",
-      text: "正在扫描……设备列表刷新。",
+      text: "扫描中……信号捕捉成功。检测到一台可连接义肢设备。",
       toast: "已连接：经理·张 的 HR-07 型义肢（右臂）。",
+      hud: {
+        stage: "device_found",
+        name: "经理·张",
+        model: "HR-07 型义肢（右臂）",
+        signal: 87,
+        distance: "12.7m",
+        dotX: "62%",
+        dotY: "38%",
+        deviceLabel: "DEV_01"
+      },
       choices: [
-        { text: "点击连接", next: "p_stamp_hint" }
+        { text: "点击连接", next: "p_link_est" }
       ]
+    },
+
+    /* 神经链接建立成功（HUD 过场） */
+    p_link_est: {
+      type: "narration",
+      bg: "bedroom",
+      speaker: "系统",
+      text: "神经链接已建立。正在同步视觉信号……链接稳定。",
+      hud: {
+        stage: "connected",
+        name: "经理·张",
+        model: "HR-07 型义肢（右臂）",
+        signal: 100,
+        distance: "12.7m",
+        dotX: "62%",
+        dotY: "38%",
+        deviceLabel: "DEV_01"
+      },
+      next: "p_stamp_hint"
     },
 
     p_stamp_hint: {
@@ -221,7 +271,15 @@ window.STORY = {
       type: "narration",
       bg: "dark",
       speaker: "旁白",
-      text: "「……这只是个游戏。」你闭上了眼睛。画面渐暗。",
+      text: "你闭上了眼睛。画面渐暗。",
+      next: "p_end_thought"
+    },
+
+    p_end_thought: {
+      type: "narration",
+      bg: "dark",
+      speaker: "你",
+      text: "「……这只是个游戏。」",
       next: "c1_certify"
     },
 
@@ -310,6 +368,16 @@ window.STORY = {
         "当晚，你躺在床上，又打开了那个密钥界面。屏幕上多了一个【已连接设备】列表。" +
         "列表中显示着——「经理·张」，旁边有一行小字标注：「可重复连接」。你点了进去。",
       toast: "已连接设备 · 1 项",
+      hud: {
+        stage: "quick",
+        name: "经理·张",
+        model: "HR-07 型义肢（右臂）[历史连接]",
+        signal: 91,
+        distance: "11.5m",
+        dotX: "60%",
+        dotY: "40%",
+        deviceLabel: "MGR_ZHANG"
+      },
       next: "c1_comp_switch"
     },
 
@@ -366,6 +434,16 @@ window.STORY = {
         "第三天晚上。你又打开了密钥界面，这次你注意到了另一个按钮——" +
         "【随机连接附近义肢】。你犹豫了几秒，按了下去。",
       toast: "正在扫描附近设备……",
+      hud: {
+        stage: "quick",
+        name: "便利店·陈",
+        model: "义肢右臂（收银终端联动型）",
+        signal: 92,
+        distance: "8.3m",
+        dotX: "55%",
+        dotY: "42%",
+        deviceLabel: "DEV_02"
+      },
       next: "c1_connect_conv"
     },
 
@@ -412,7 +490,15 @@ window.STORY = {
       type: "narration",
       bg: "bedroom",
       speaker: "你",
-      text: "「……好，这下两清了。」「……反正他店那么大，少一笔赊账也不会发现。」你关掉了灯。",
+      text: "「……好，这下两清了。」「……反正他店那么大，少一笔赊账也不会发现。」",
+      next: "c1_debt_thought_act"
+    },
+
+    c1_debt_thought_act: {
+      type: "narration",
+      bg: "bedroom",
+      speaker: "旁白",
+      text: "你关掉了灯。",
       next: "c1_police_intro"
     },
 
@@ -427,6 +513,16 @@ window.STORY = {
       text:
         "几天后的一个深夜。你像往常一样躺在床上，打开了密钥界面。手指悬在" +
         "【随机连接附近义肢】上，轻轻按了下去。",
+      hud: {
+        stage: "quick",
+        name: "警员·马",
+        model: "XX-12 型执法义肢",
+        signal: 78,
+        distance: "22.4m",
+        dotX: "70%",
+        dotY: "30%",
+        deviceLabel: "DEV_03"
+      },
       next: "c1_shoot_connect"
     },
 
@@ -503,6 +599,16 @@ window.STORY = {
         "显然是在奔跑。周围是逼仄的巷道，两侧是锈蚀的金属墙和密如蛛网的管线，" +
         "头顶晾晒的衣物在风里摆动。远处有孩子的哭声和断断续续的机器轰鸣。",
       toast: "已连接：医生·阿毅，义肢右臂（AX-07 医疗终端联动型）",
+      hud: {
+        stage: "quick",
+        name: "医生·阿毅",
+        model: "义肢右臂（AX-07 医疗终端联动型）",
+        signal: 95,
+        distance: "6.2m",
+        dotX: "45%",
+        dotY: "35%",
+        deviceLabel: "DEV_04"
+      },
       next: "c2_arrive"
     },
 
@@ -541,6 +647,16 @@ window.STORY = {
       text:
         "女人松开义肢手，快步走到床边蹲下，握住床上人的手。" +
         "你通过医生的眼睛，看清了床上人的脸——",
+      next: "c2_face2_act"
+    },
+
+    c2_face2_act: {
+      type: "narration",
+      bg: "dark",
+      speaker: "旁白",
+      text:
+        "那人的脸和你断开连接前看到的最后一幕重合了。" +
+        "你感觉自己的呼吸变重了。",
       next: "c2_face2"
     },
 
@@ -549,9 +665,7 @@ window.STORY = {
       bg: "dark",
       speaker: "你",
       text:
-        "「是他。我开枪打的那个人。」「他没死……？」" +
-        "那人的脸和你断开连接前看到的最后一幕重合了。" +
-        "你感觉自己的呼吸变重了。",
+        "「是他。我开枪打的那个人。」「他没死……？」",
       next: "c2_talk"
     },
 
@@ -600,10 +714,18 @@ window.STORY = {
       bg: "dark",
       speaker: "你",
       text:
+        "「他是在求我帮他死。不是治病，是帮他死得有价值。」" +
+        "「那份报告是我开的枪。现在我又有机会决定他的结局。」",
+      next: "c2_patient2_narr"
+    },
+
+    c2_patient2_narr: {
+      type: "narration",
+      bg: "dark",
+      speaker: "旁白",
+      text:
         "你通过医生的眼睛看着那张脸——那是一个你亲手伤害过的人。" +
         "现在这个人正在哀求一份「被正义杀死」的假证明。" +
-        "「他是在求我帮他死。不是治病，是帮他死得有价值。」" +
-        "「那份报告是我开的枪。现在我又有机会决定他的结局。」" +
         "你第一次觉得，自己在那间卧室里获得的「神权」，不是一件玩具了。",
       next: "c2_wife"
     },
@@ -756,7 +878,15 @@ window.STORY = {
       speaker: "你",
       text:
         "「我又杀了他一次。第一次是枪，这一次是笔。」" +
-        "「我在这具身体里，做完了这件事。」" +
+        "「我在这具身体里，做完了这件事。」",
+      next: "c2_disconnect_act"
+    },
+
+    c2_disconnect_act: {
+      type: "narration",
+      bg: "bedroom",
+      speaker: "旁白",
+      text:
         "你断开连接，躺回床上。窗外的霓虹灯光透过窗帘照在天花板上，" +
         "像一道寂静的伤口。",
       next: "c2_faint"
@@ -781,7 +911,15 @@ window.STORY = {
       speaker: "你",
       text:
         "「我什么都没做。我离开了。」" +
-        "「我走了以后，他们怎么办？」" +
+        "「我走了以后，他们怎么办？」",
+      next: "c2_leave_thought_act"
+    },
+
+    c2_leave_thought_act: {
+      type: "narration",
+      bg: "dark",
+      speaker: "旁白",
+      text:
         "你站在那里很久。行人从你身边流过，没有人注意到你。" +
         "你最后看了一眼那个巷道的方向，然后转身走了。",
       next: "c2_faint"
@@ -797,8 +935,16 @@ window.STORY = {
       type: "narration",
       bg: "dark",
       speaker: "你",
+      text: "「我在哪？」",
+      next: "c2_faint_act"
+    },
+
+    c2_faint_act: {
+      type: "narration",
+      bg: "dark",
+      speaker: "旁白",
       text:
-        "「我在哪？」断开连接后，意识瞬间抽离。眼前模糊，天旋地转。" +
+        "断开连接后，意识瞬间抽离。眼前模糊，天旋地转。" +
         "你发现自己正躺在地上，头靠着某处坚硬的东西。" +
         "面前是一张凑得很近的脸，一双眼睛睁得很大。",
       next: "c2_boy"
@@ -859,6 +1005,16 @@ window.STORY = {
         "「输入义肢编号以搜索连接」。你想起那个少年义肢手腕上的编号 AX-1072。" +
         "犹豫了一下，把那串数字输入了搜索框。",
       toast: "正在搜索……已找到对应义肢。",
+      hud: {
+        stage: "quick",
+        name: "少年（未知）",
+        model: "义肢右臂 · AX-1072",
+        signal: 64,
+        distance: "3.6km",
+        dotX: "35%",
+        dotY: "55%",
+        deviceLabel: "AX-1072"
+      },
       next: "c2_repair_intro"
     },
 
@@ -866,8 +1022,15 @@ window.STORY = {
       type: "narration",
       bg: "bedroom",
       speaker: "你",
+      text: "「……他帮了我一次。我帮他解决这个卡顿，就当还人情了。」",
+      next: "c2_repair_intro_act"
+    },
+
+    c2_repair_intro_act: {
+      type: "narration",
+      bg: "bedroom",
+      speaker: "旁白",
       text:
-        "「……他帮了我一次。我帮他解决这个卡顿，就当还人情了。」" +
         "你点了连接。画面切换——进入了少年的义肢视野。视角很低，因为少年的个子本就不高。" +
         "能看到少年正坐在桌边，还在埋头拆那块面板，完全没有察觉右臂的临时离线。",
       next: "c2_repair_game"
@@ -888,11 +1051,33 @@ window.STORY = {
       type: "narration",
       bg: "bedroom",
       speaker: "系统",
+      text: "「连接问题已修复。信号延迟：0.1 秒 → 0.01 秒。」",
+      next: "c2_repair_done_act"
+    },
+
+    c2_repair_done_act: {
+      type: "narration",
+      bg: "bedroom",
+      speaker: "旁白",
       text:
-        "「连接问题已修复。信号延迟：0.1 秒 → 0.01 秒。」" +
         "你断开连接，靠回椅背。窗外贫民窟方向传来模糊的车声。" +
-        "你想起少年说话时那种亮晶晶的眼神。" +
-        "「……没见识。」你关掉了超脑，屏幕暗下去。",
+        "你想起少年说话时那种亮晶晶的眼神。",
+      next: "c2_repair_done_thought"
+    },
+
+    c2_repair_done_thought: {
+      type: "narration",
+      bg: "bedroom",
+      speaker: "你",
+      text: "「……没见识。」",
+      next: "c2_repair_done_last"
+    },
+
+    c2_repair_done_last: {
+      type: "narration",
+      bg: "bedroom",
+      speaker: "旁白",
+      text: "你关掉了超脑，屏幕暗下去。",
       toast: "修复完成 · 第二章 · 完",
       next: "c3_certify"
     },
@@ -927,6 +1112,16 @@ window.STORY = {
         "你打开密钥界面，在搜索框里输入了关键词——「超体公司 高管 义肢编号」。" +
         "系统返回了一串列表，你随手点了一个看起来层级不低的编号。",
       toast: "正在搜索……已找到：超体公司高管 ×12",
+      hud: {
+        stage: "quick",
+        name: "超体公司·高管",
+        model: "EX-09 高管定制型义肢",
+        signal: 96,
+        distance: "1.2km",
+        dotX: "58%",
+        dotY: "28%",
+        deviceLabel: "EXEC_01"
+      },
       next: "c3_exec_bring"
     },
 
@@ -1008,9 +1203,15 @@ window.STORY = {
       type: "narration",
       bg: "lobby",
       speaker: "你",
-      text:
-        "「他没有义肢？这个时代……高层里怎么可能有 0 义肢的人？」" +
-        "你注意到——CTO 的领口和手腕露出的皮肤，没有任何义肢接口的痕迹。",
+      text: "「他没有义肢？这个时代……高层里怎么可能有 0 义肢的人？」",
+      next: "c3_cto_id_act"
+    },
+
+    c3_cto_id_act: {
+      type: "narration",
+      bg: "lobby",
+      speaker: "旁白",
+      text: "你注意到——CTO 的领口和手腕露出的皮肤，没有任何义肢接口的痕迹。",
       next: "c3_meeting_end"
     },
 
@@ -1070,7 +1271,7 @@ window.STORY = {
     c3_vanity_choice: {
       type: "dialog",
       bg: "lobby",
-      speaker: "你",
+      speaker: "旁白",
       text:
         "会议室里只有你们两人。夕阳从落地窗斜射进来，在桌面上拉出一道长条形的光。" +
         "CTO 靠在桌沿上，双臂抱在胸前，目光平淡地看着你。",
@@ -1096,9 +1297,17 @@ window.STORY = {
       type: "narration",
       bg: "lobby",
       speaker: "你",
+      text: "「……我答应你。但你要答应我一件事——帮我瞒住这个秘密。不能让公司追踪到我。」",
+      next: "c3_accept_cto"
+    },
+
+    c3_accept_cto: {
+      type: "narration",
+      bg: "lobby",
+      speaker: "旁白",
       text:
-        "你沉默了很久，最后开口，声音干涩：「……我答应你。但你要答应我一件事——" +
-        "帮我瞒住这个秘密。不能让公司追踪到我。」CTO 歪了一下头：「……你在跟我谈条件。" +
+        "你沉默了很久，最后开口，声音干涩。" +
+        "CTO 歪了一下头：「……你在跟我谈条件。" +
         "可以。你做的事我不管，今天的事也没有第四个人知道。」",
       next: "c3_strip"
     },
@@ -1280,19 +1489,27 @@ window.STORY = {
         "那个十几岁的女孩手指抽搐的样子、少年站在玻璃窗前沉默的侧脸。" +
         "你试图告诉自己，这一切和你没关系，你只是一个「帮忙的人」。但你看到芯片的时候，你握住了它。" +
         "不管里面是什么，你都成了这一环的一部分。",
-      next: "c3_crash3"
+      next: "c3_crash3_act"
     },
 
     c3_crash3: {
       type: "narration",
       bg: "bedroom",
       speaker: "你",
+      text: "「……我到底在做什么？」",
+      toast: "第三章 · 完",
+      next: "c4_certify"
+    },
+
+    c3_crash3_act: {
+      type: "narration",
+      bg: "bedroom",
+      speaker: "旁白",
       text:
         "你打开超脑，屏幕亮起来，密钥界面还在。你看着那个熟悉的图标，" +
         "伸手想关掉——手指悬在屏幕上方，没有按下去。你关掉了超脑，把脸埋进手里。" +
-        "「……我到底在做什么？」窗外警笛声远远传来，你没有抬头看。",
-      toast: "第三章 · 完",
-      next: "c4_certify"
+        "窗外警笛声远远传来，你没有抬头看。",
+      next: "c3_crash3"
     },
 
     /* =================================================================
@@ -1525,8 +1742,16 @@ window.STORY = {
       type: "narration",
       bg: "dark",
       speaker: "你",
+      text: "「……你怎么知道钥匙的事？」",
+      next: "c4_key_leak2_act"
+    },
+
+    c4_key_leak2_act: {
+      type: "narration",
+      bg: "dark",
+      speaker: "旁白",
       text:
-        "「……你怎么知道钥匙的事？」你的声音很小，带着一丝自己都没意识到的疲惫。" +
+        "你的声音很小，带着一丝自己都没意识到的疲惫。" +
         "CTO 微微点头，像是得到了确认——" +
         "「我不确定。只是猜的。创始人的旧系统里，一直有一个『外部验证协议』的空槽。" +
         "我查了很久，不知道那是留给谁的。但看到你的操作方式之后，我想到了那个可能。我没想到……真的是。」",
@@ -1537,10 +1762,17 @@ window.STORY = {
       type: "narration",
       bg: "dark",
       speaker: "你",
+      text: "「……是。有一把。创始人的密钥，在我这里。」",
+      next: "c4_key_leak3_act"
+    },
+
+    c4_key_leak3_act: {
+      type: "narration",
+      bg: "dark",
+      speaker: "旁白",
       text:
         "你捏着酒杯，没有看他。你不知道自己为什么要说出来——也许是喝了酒，" +
         "也许是 CTO 刚才说的那些话让你觉得……这个人可能真的只是想要活下来。" +
-        "「……是。有一把。创始人的密钥，在我这里。」" +
         "CTO 沉默了一会儿，低声说：「……那你要藏好。他知道了，你会死得比我快。」",
       next: "c4_night"
     },
@@ -1634,12 +1866,27 @@ window.STORY = {
       type: "narration",
       bg: "bedroom",
       speaker: "你",
+      text: "「昨晚回来的路上，我碰过什么金属的东西吗？」",
+      next: "c4_morning2_narr"
+    },
+
+    c4_morning2_narr: {
+      type: "narration",
+      bg: "bedroom",
+      speaker: "旁白",
       text:
-        "「昨晚回来的路上，我碰过什么金属的东西吗？」你回忆了一遍昨晚的路径——" +
+        "你回忆了一遍昨晚的路径——" +
         "少年的板房、巷道、轨道车、公寓。沿途没有碰过任何需要伸手去碰的东西。" +
         "你想到另一种可能——这不是你在外面蹭到的。这是有人在夜间碰过你的外套，无意中留下的痕迹。" +
-        "门锁是好的，房间里一切如常——但如果有人在你睡着之后进来过……" +
-        "「……他们在确认我的住址。」",
+        "门锁是好的，房间里一切如常——但如果有人在你睡着之后进来过……",
+      next: "c4_morning2_last"
+    },
+
+    c4_morning2_last: {
+      type: "narration",
+      bg: "bedroom",
+      speaker: "你",
+      text: "「……他们在确认我的住址。」",
       next: "c4_morning3"
     },
 
@@ -1735,7 +1982,7 @@ window.STORY = {
     c5_decision: {
       type: "narration",
       bg: "bedroom",
-      speaker: "你",
+      speaker: "旁白",
       text:
         "你站在公寓门口，手里攥着那张荧光字的照片，耳朵里是 CTO 的语音，" +
         "心里的结论只有一个——有人在等你。你穿上外套，把超脑收进口袋，推开房门。" +
@@ -1995,12 +2242,27 @@ window.STORY = {
       type: "narration",
       bg: "dark",
       speaker: "你",
+      text: "「……不可能是他。」",
+      next: "ending_a1_4_narr"
+    },
+
+    ending_a1_4_narr: {
+      type: "narration",
+      bg: "dark",
+      speaker: "旁白",
       text:
-        "「……不可能是他。」你走近了一步。玻璃上倒映出自己的影子，" +
+        "你走近了一步。玻璃上倒映出自己的影子，" +
         "和那具研究体的轮廓重叠在一起。侧面、下颌线、肩膀宽度——" +
         "你的视线扫过那些细节，像是扫描一样精准，但脑子拒绝给这些细节下结论。" +
-        "你低头看了一眼自己手里的咖啡杯，手指握得很稳，没有抖。" +
-        "「……我说过他会平安的。」",
+        "你低头看了一眼自己手里的咖啡杯，手指握得很稳，没有抖。",
+      next: "ending_a1_4_last"
+    },
+
+    ending_a1_4_last: {
+      type: "narration",
+      bg: "dark",
+      speaker: "你",
+      text: "「……我说过他会平安的。」",
       next: "ending_a1_5"
     },
 
@@ -2024,10 +2286,33 @@ window.STORY = {
       type: "narration",
       bg: "office",
       speaker: "你",
+      text: "「……把该放的人放了就好。别的我不要。」",
+      next: "ending_a2_narr"
+    },
+
+    ending_a2_narr: {
+      type: "narration",
+      bg: "office",
+      speaker: "旁白",
       text:
-        "你看了伙伴一眼，摇了摇头。「……把该放的人放了就好。别的我不要。」" +
-        "主理人像在确认：「你确定？」「确定。」" +
-        "你没有回头看 CTO，转身朝门口走去。伙伴跟在你身后，两个人消失在走廊的光线里。",
+        "你看了伙伴一眼，摇了摇头。" +
+        "主理人像在确认：「你确定？」",
+      next: "ending_a2_last"
+    },
+
+    ending_a2_last: {
+      type: "narration",
+      bg: "office",
+      speaker: "你",
+      text: "「确定。」",
+      next: "ending_a2_last_act"
+    },
+
+    ending_a2_last_act: {
+      type: "narration",
+      bg: "office",
+      speaker: "旁白",
+      text: "你没有回头看 CTO，转身朝门口走去。伙伴跟在你身后，两个人消失在走廊的光线里。",
       toast: "",
       next: "ending_a2_2"
     },
@@ -2069,12 +2354,19 @@ window.STORY = {
     ending_a2_5: {
       type: "narration",
       bg: "dark",
-      speaker: "你",
+      speaker: "旁白",
       text:
         "你想开口说话，但你发现自己发不出声音。你只是看着他们——一张熟悉的脸，另一张熟悉的脸。" +
         "灯光昏黄而温暖，桌上摊着零件和图纸，啤酒瓶倒了一个，没有人在意。" +
-        "你意识到自己在做梦，也意识到这个梦会醒。但你有没有急着睁开眼睛。" +
-        "「……能久一点就好了。」",
+        "你意识到自己在做梦，也意识到这个梦会醒。但你有没有急着睁开眼睛。",
+      next: "ending_a2_5_thought"
+    },
+
+    ending_a2_5_thought: {
+      type: "narration",
+      bg: "dark",
+      speaker: "你",
+      text: "「……能久一点就好了。」",
       next: "ending_a2_6"
     },
 
@@ -2173,6 +2465,16 @@ window.STORY = {
         "夜色里又多了一道脚步声。比少年的步子慢一些，沉一些，像是走了很长的一段路才来到这里。" +
         "那道身影从暗处走进屋前的灯光里，轮廓逐渐清晰。CTO 也侧过头，看到了那个身影——" +
         "他没有站起来，但搭在桌沿的手指微微收拢了一下。",
+      next: "ending_c_you_speak_act"
+    },
+
+    ending_c_you_speak_act: {
+      type: "narration",
+      bg: "dark",
+      speaker: "旁白",
+      text:
+        "少年张了张嘴，一时没找到合适的话——「……你……你怎么……」" +
+        "你走进门，把那句话接了过去。语气很轻，像是随手捡起一个再普通不过的话题——",
       next: "ending_c_you_speak"
     },
 
@@ -2180,10 +2482,7 @@ window.STORY = {
       type: "dialog",
       bg: "dark",
       speaker: "你",
-      text:
-        "少年张了张嘴，一时没找到合适的话——「……你……你怎么……」" +
-        "你走进门，把那句话接了过去。语气很轻，像是随手捡起一个再普通不过的话题——" +
-        "「……路过。顺便看看你们还活着没。」",
+      text: "「……路过。顺便看看你们还活着没。」",
       choices: [
         { text: "坐下来", next: "ending_c_final" }
       ]
